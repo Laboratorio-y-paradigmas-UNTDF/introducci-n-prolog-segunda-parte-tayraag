@@ -58,7 +58,7 @@ vuelo(bue, bog, 380).
 % ============================================================
 
 % COMPLETAR: iguales(X, Y) :- ???
-iguales(_, _) :- fail.
+iguales(X, Y) :- X = Y.
 
 
 % ============================================================
@@ -72,7 +72,7 @@ iguales(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR: son_identicos(X, Y) :- ???
-son_identicos(_, _) :- fail.
+son_identicos(X, Y) :- X == Y.
 
 
 % ============================================================
@@ -85,7 +85,7 @@ son_identicos(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR: descomponer(T, L) :- ???
-descomponer(_, _) :- fail.
+descomponer(T, L) :- T=..L.
 
 
 % ============================================================
@@ -100,7 +100,7 @@ descomponer(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR: comparten_destino(X, Y) :- ???
-comparten_destino(_, _) :- fail.
+comparten_destino(X, Y) :- viaja(X, Z), viaja(Y, Z), \+ X = Y.
 
 
 % ============================================================
@@ -118,7 +118,7 @@ comparten_destino(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR: todos_los_viajeros(D, L) :- ???
-todos_los_viajeros(_, []) :- fail.
+todos_los_viajeros(D, L) :- findall(P, viaja(P, D), L).
 
 
 % ============================================================
@@ -132,7 +132,7 @@ todos_los_viajeros(_, []) :- fail.
 % ============================================================
 
 % COMPLETAR: destinos_unicos(L) :- ???
-destinos_unicos([]) :- fail.
+destinos_unicos(L) :- setof(N, E^viaja(E, N), L).
 
 
 % ============================================================
@@ -145,7 +145,7 @@ destinos_unicos([]) :- fail.
 % ============================================================
 
 % COMPLETAR: cuadrado(N, C) :- ???
-cuadrado(_, _) :- fail.
+cuadrado(N, C) :- C is N * N.
 
 
 % ============================================================
@@ -160,8 +160,8 @@ cuadrado(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR (dos cláusulas): factorial/2
-factorial(_, _) :- fail.
-
+factorial(0, 1). 
+factorial(N, F) :- N > 0, N1 is N - 1, factorial(N1, F1), F is N * F1.
 
 % ============================================================
 %  EJERCICIO 9 — Corte verde: maximo/3
@@ -174,7 +174,8 @@ factorial(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR: maximo/3
-maximo(_, _, _) :- fail.
+maximo(X, Y, X) :- X >= Y, !.
+maximo(_, Y, Y).
 
 
 % ============================================================
@@ -188,7 +189,8 @@ maximo(_, _, _) :- fail.
 % ============================================================
 
 % COMPLETAR: valor_absoluto/2
-valor_absoluto(_, _) :- fail.
+valor_absoluto(X, X) :- X >= 0, !.
+valor_absoluto(X, A) :- A is -X.
 
 
 % ============================================================
@@ -207,7 +209,9 @@ valor_absoluto(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR: clasificar_edad/2
-clasificar_edad(_, _) :- fail.
+clasificar_edad(Edad, Categoria) :- (Edad < 18 -> Categoria = menor;
+                                    Edad < 65 -> Categoria = adulto;
+                                    Categoria = mayor).
 
 
 % ============================================================
@@ -222,7 +226,7 @@ clasificar_edad(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR: no_viaja/2
-no_viaja(_, _) :- fail.
+no_viaja(Persona, Destino) :- persona(Persona, _), \+ viaja(Persona, Destino).
 
 
 % ============================================================
@@ -236,7 +240,8 @@ no_viaja(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR (dos cláusulas): pertenece/2
-pertenece(_, _) :- fail.
+pertenece(X, [X|_]).
+pertenece(X, [_|T]) :- pertenece(X, T).
 
 
 % ============================================================
@@ -249,7 +254,8 @@ pertenece(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR (dos cláusulas): concatenar/3
-concatenar(_, _, _) :- fail.
+concatenar([], L, L).
+concatenar([H|T], L2, [H|L3]) :- concatenar(T, L2, L3).
 
 
 % ============================================================
@@ -262,7 +268,8 @@ concatenar(_, _, _) :- fail.
 % ============================================================
 
 % COMPLETAR (dos cláusulas): longitud/2
-longitud(_, _) :- fail.
+longitud([], 0).
+longitud([_|T], N) :- longitud(T, N1), N is N1 + 1.
 
 
 % ============================================================
@@ -276,7 +283,8 @@ longitud(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR (dos cláusulas): ultimo/2
-ultimo(_, _) :- fail.
+ultimo([X], X).
+ultimo([_|T], U) :- ultimo(T, U).
 
 
 % ============================================================
@@ -294,7 +302,9 @@ ultimo(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR: reversa/2 y reversa_aux/3
-reversa(_, _) :- fail.
+reversa(L, R) :- reversa_aux(L, [], R).
+reversa_aux([], Acc, Acc).
+reversa_aux([H|T], Acc, R) :- reversa_aux(T, [H|Acc], R).
 
 
 % ============================================================
@@ -308,7 +318,10 @@ reversa(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR: suma_lista/2 y suma_lista_aux/3
-suma_lista(_, _) :- fail.
+suma_lista(L, S) :- suma_lista_aux(L, 0, S).
+suma_lista_aux([], Acc, Acc).
+suma_lista_aux([H|T], Acc, S) :- NewAcc is Acc + H,
+                                suma_lista_aux(T, NewAcc, S).
 
 
 % ============================================================
@@ -322,7 +335,10 @@ suma_lista(_, _) :- fail.
 % ============================================================
 
 % COMPLETAR: maximo_lista/2
-maximo_lista(_, _) :- fail.
+maximo_lista([H|T], M) :- maximo_lista_aux(T, H, M).
+maximo_lista_aux([], M, M).
+maximo_lista_aux([H|T], Acc, M) :- (H > Acc -> NewAcc = H; NewAcc = Acc),
+                                maximo_lista_aux(T, NewAcc, M).
 
 
 % ============================================================
@@ -333,10 +349,14 @@ maximo_lista(_, _) :- fail.
 %  ?- contar(a, [a,b,a,c,a], N).   % N = 3
 %  ?- contar(z, [a,b,c], N).       % N = 0
 %  ?- contar(1, [], N).            % N = 0
-% ============================================================
+% ============================================================ 
 
 % COMPLETAR (dos cláusulas dependiendo de si H==X): contar/3
-contar(_, _, _) :- fail.
+contar(_, [], 0).
+contar(X, [H|T], N) :- X == H, !,
+                    contar(X, T, N1),
+                    N is N1 + 1.
+contar(X, [_|T], N) :- contar(X, T, N).
 
 
 % ============================================================
@@ -350,7 +370,7 @@ contar(_, _, _) :- fail.
 % ============================================================
 
 % COMPLETAR: pares/2
-pares(_, []) :- fail.
+pares(L, P) :- findall(X, (member(X, L), 0 is X mod 2), P).
 
 
 % ============================================================
